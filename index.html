@@ -10,17 +10,179 @@
     //
     document.addEventListener("deviceready",onDeviceReady,false);
 
+	
+	
     // device APIs are available
     //
     function onDeviceReady() {    
 	// Something that needs to happen "before" the page is loaded
-	Videoplayer.playVideo(http://www.youtube.com/watch?v=9nt-BMN_GIw);
+    
+	  //request the persistent file system
+    window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, onFSSuccess, onError);
+    
+	}
+
+	function playVideo(vidUrl) {
+    window.plugins.videoPlayer.play(vidUrl);
+	}
+
+	function onFSSuccess(fs) {
+    fileSystem = fs;
+
+    getById("#dirListingButton").addEventListener("touchstart",doDirectoryListing);            
+    getById("#addFileButton").addEventListener("touchstart",doAppendFile);            
+    getById("#readFileButton").addEventListener("touchstart",doReadFile);            
+    getById("#metadataFileButton").addEventListener("touchstart",doMetadataFile);            
+    getById("#deleteFileButton").addEventListener("touchstart",doDeleteFile);            
+    
+    logit( "Got the file system: "+fileSystem.name +"<br/>" +
+                                    "root entry name is "+fileSystem.root.name + "<p/>")    
+
+    doDirectoryListing();
+	}
+	
+	
+	function gotFiles(entries) {
+    var s = "";
+    for(var i=0,len=entries.length; i<len; i++) {
+        //entry objects include: isFile, isDirectory, name, fullPath
+        s+= entries[i].fullPath;
+        if (entries[i].isFile) {
+            s += " [F]";
+        }
+        else {
+            s += " [D]";
+        }
+        s += "<br/>";
+        
     }
+    s+="<p/>";
+    logit(s);
+	}
+
+	function doDirectoryListing(e) {
+    //get a directory reader from our FS
+    var dirReader = fileSystem.root.createReader();
+
+    dirReader.readEntries(gotFiles,onError);        
+	}
+	
+	
 
     </script>
   </head>
   <body>
 	<h1>Play it Sam</h1>
+	<a href="#" onclick="window.open(window.plugins.videoPlayer.play("file:///sdcard/MyMovie.mp4"));">Click Here for sd-card</a>
+	<a href="#" onclick="window.plugins.videoPlayer.play("http://www.systemvaruhuset.net/android/Swedish Lucia For Dummies.mp4");">Click Here for systemvaruhuset.net</a>
+	<a href="#" onclick="window.plugins.videoPlayer.play("www.youtube.com/watch?v=9nt-BMN_GIw");">Click Here for you tube</a>
+
+    
+ 
+<p>
+ <p>
+  
+    <a href="#" onclick="playVideo('http://path.to.my/file.mp4')">Play HTTP</a><p/>
+    <a href="#" onclick="playVideo('file:///path/to/my/file.mp4')">Play File</a><p/>
+  </body>
+</html>
+
+<!-- window.requestFileSystem = window.requestFileSystem || window.webkitRequestFileSystem;
+var fs = null;
+
+function errorHandler(e) {
+  var msg = '';
+  switch (e.code) {
+    case FileError.QUOTA_EXCEEDED_ERR:
+      msg = 'QUOTA_EXCEEDED_ERR';
+      break;
+    case FileError.NOT_FOUND_ERR:
+      msg = 'NOT_FOUND_ERR';
+      break;
+    case FileError.SECURITY_ERR:
+      msg = 'SECURITY_ERR';
+      break;
+    case FileError.INVALID_MODIFICATION_ERR:
+      msg = 'INVALID_MODIFICATION_ERR';
+      break;
+    case FileError.INVALID_STATE_ERR:
+      msg = 'INVALID_STATE_ERR';
+      break;
+    default:
+      msg = 'Unknown Error';
+      break;
+  };
+  document.querySelector('#example-list-fs-ul').innerHTML = 'Error: ' + msg;
+}
+
+function initFS() {
+  window.requestFileSystem(window.TEMPORARY, 1024*1024, function(filesystem) {
+    fs = filesystem;
+  }, errorHandler);
+}
+
+var buttons = document.querySelectorAll('#example-list-fs button');
+var filelist = document.querySelector('#example-list-fs-ul');
+
+if (buttons.length >= 3) {
+  buttons[0].addEventListener('click', function(e) {
+    if (!fs) {
+      return;
+    }
+    fs.root.getFile('log.txt', {create: true}, null, errorHandler);
+    fs.root.getFile('song.mp3', {create: true}, null, errorHandler);
+    fs.root.getDirectory('mypictures', {create: true}, null, errorHandler);
+    filelist.innerHTML = 'Files created.';
+  }, false);
+
+  buttons[1].addEventListener('click', function(e) {
+    if (!fs) {
+      return;
+    }
+
+    var dirReader = fs.root.createReader();
+    dirReader.readEntries(function(entries) {
+      if (!entries.length) {
+        filelist.innerHTML = 'Filesystem is empty.';
+      } else {
+        filelist.innerHTML = '';
+      }
+
+      var fragment = document.createDocumentFragment();
+      for (var i = 0, entry; entry = entries[i]; ++i) {
+        var img = entry.isDirectory ? '<img src="http://www.html5rocks.com/static/images/tutorials/icon-folder.gif">' :
+                                      '<img src="http://www.html5rocks.com/static/images/tutorials/icon-file.gif">';
+        var li = document.createElement('li');
+        li.innerHTML = [img, '<span>', entry.name, '</span>'].join('');
+        fragment.appendChild(li);
+      }
+      filelist.appendChild(fragment);
+    }, errorHandler);
+  }, false);
+
+  buttons[2].addEventListener('click', function(e) {
+    if (!fs) {
+      return;
+    }
+
+    var dirReader = fs.root.createReader();
+    dirReader.readEntries(function(entries) {
+      for (var i = 0, entry; entry = entries[i]; ++i) {
+        if (entry.isDirectory) {
+          entry.removeRecursively(function() {}, errorHandler);
+        } else {
+          entry.remove(function() {}, errorHandler);
+        }
+      }
+      filelist.innerHTML = 'Directory emptied.';
+    }, errorHandler);
+  }, false);
+}
+
+// Initiate filesystem on page load.
+if (window.requestFileSystem) {
+  initFS();
+}​ -->
 
   </body>
 </html>
