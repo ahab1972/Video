@@ -3,7 +3,7 @@
 
         xmlns:gap   = "http://phonegap.com/ns/1.0"
         id          = "biz.ahab.browser"
-        version     = "0.0.3"
+        version     = "0.0.4"
         versionCode = "10" >
 
         <!-- versionCode is optional and Android only -->
@@ -25,5 +25,6 @@
 		<!-- <gap:plugin name="org.apache.cordova.inappbrowser" version="0.3.3" /> -->
 		<!-- <gap:plugin name="org.apache.cordova.media-capture" version="0.2.8" /> -->
 		<gap:plugin name="com.dawsonloudon.videoplayer" version="1.0.0" />
+		<gap:plugin name="io.github.pwlin.cordova.plugins.fileopener2" version="1.0.5" />
 
     </widget>

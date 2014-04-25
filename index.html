@@ -74,7 +74,7 @@
   <body>
 	<h1>Play it Sam</h1>
 	<a href="#" onclick="window.open(window.plugins.videoPlayer.play("file:///sdcard/MyMovie.mp4"));">Click Here for sd-card</a>
-	<a href="#" onclick="window.plugins.videoPlayer.play("http://www.systemvaruhuset.net/android/Swedish Lucia For Dummies.mp4");">Click Here for systemvaruhuset.net</a>
+	<a href="#" onclick="window.plugins.videoPlayer.play("http://www.systemvaruhuset.net/android/Lucia.mp4");">Click Here for systemvaruhuset.net</a>
 	<a href="#" onclick="window.plugins.videoPlayer.play("www.youtube.com/watch?v=9nt-BMN_GIw");">Click Here for you tube</a>
 
     
@@ -85,14 +85,19 @@
     <a href="#" onclick="playVideo('http://path.to.my/file.mp4')">Play HTTP</a><p/>
     <a href="#" onclick="playVideo('file:///Downloads/Lucia.mp4')">Play Download File</a><p/>
 	<a href="#" onclick="playVideo('file:///Data/Data/Lucia.mp4')">Play Data Data File</a><p/>
+	<a href="#" onclick="playVideo('file:///storage/emulated/0/Download/Lucia.mp4')">Play Data Data File</a><p/>
+	
 	
 	
 <p>
  <p>
   
 	
-	    <a href=('file:///Downloads/Lucia.mp4')>Play Download File</a><p/>
-		<a href=('file:///Data/Data/Lucia.mp4')>Play Data data File</a><p/>
+	    <a href="file:///Downloads/Lucia.mp4")>Play Download File</a><p/>
+		<a href="file:///Data/Data/Lucia.mp4")>Play Data data File</a><p/>
+		<a href="cdvfile://localhost/persistent/Downloads/Lucia.mp4">Play cdv File</a><p/>
+		
+		window.plugins.fileOpener.open( path );
 
   </body>
 </html>
